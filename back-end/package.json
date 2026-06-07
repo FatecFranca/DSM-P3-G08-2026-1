@@ -7,6 +7,7 @@
     "start": "node ./src/bin/server.js"
   },
   "dependencies": {
+    "@prisma/client": "6.19",
     "chalk": "^5.6.2",
     "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
@@ -16,7 +17,7 @@
     "eslint": "^9.39.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
-    "prisma": "^6.19.3"
+    "prisma": "6.19"
   },
   "type": "module"
 }

@@ -1,11 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
+ 
+ provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -13,3 +8,63 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  nome      String
+  email     String @unique
+  senha     String
+
+  tarefas       Tarefa[]
+  notificacoes  Notificacao[]
+}
+
+model Categoria {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  descricao   String
+
+  tarefas     Tarefa[]
+}
+
+model Tarefa {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  titulo        String
+  descricao     String?
+  status        String
+  prioridade    String
+  dataCriacao   DateTime @default(now())
+  dataLimite    DateTime?
+
+  usuarioId     String @db.ObjectId
+  categoriaId   String @db.ObjectId
+
+  usuario       Usuario @relation(fields: [usuarioId], references: [id])
+  categoria     Categoria @relation(fields: [categoriaId], references: [id])
+
+  itens         ItemTarefa[]
+  notificacoes  Notificacao[]
+}
+
+model ItemTarefa {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  descricao   String
+  concluido   Boolean @default(false)
+
+  tarefaId    String @db.ObjectId
+
+  tarefa      Tarefa @relation(fields: [tarefaId], references: [id])
+}
+
+model Notificacao {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  mensagem    String
+  lida        Boolean @default(false)
+  dataEnvio   DateTime @default(now())
+
+  usuarioId   String @db.ObjectId
+  tarefaId    String @db.ObjectId
+
+  usuario     Usuario @relation(fields: [usuarioId], references: [id])
+  tarefa      Tarefa @relation(fields: [tarefaId], references: [id])
+}
+
