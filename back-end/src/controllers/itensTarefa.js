@@ -23,11 +23,7 @@ controller.create = async function(req, res) {
 controller.retrieveAll = async function(req, res) {
   try {
 
-    const result = await prisma.itemTarefa.findMany({
-      include: {
-        tarefa: true
-      }
-    })
+    const result = await prisma.itemTarefa.findMany()
 
     return res.send(result)
 

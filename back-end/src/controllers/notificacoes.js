@@ -24,14 +24,10 @@ controller.create = async function(req, res) {
 controller.retrieveAll = async function(req, res) {
   try {
 
-    const result = await prisma.notificacao.findMany({
-      include: {
-        usuario: true,
-        tarefa: true
-      },
-      orderBy: [
-        { dataEnvio: 'desc' }
-      ]
+    const result = await prisma.notificacao.findMany({ 
+      orderBy: [ 
+        { dataEnvio: 'desc' } 
+      ] 
     })
 
     return res.send(result)

@@ -26,11 +26,37 @@ controller.retrieveAll = async function(req, res) {
 
     const result = await prisma.tarefa.findMany({
       include: {
-        usuario: true,
-        categoria: true,
-        itens: true,
-        notificacoes: true
+
+        usuario: {
+          select: {
+            nome: true,
+            email: true
+          }
+        },
+
+        categoria: {
+          select: {
+            descricao: true
+          }
+        },
+
+        itens: {
+          select: {
+            descricao: true,
+            concluido: true
+          }
+        },
+
+        notificacoes: {
+          select: {
+            mensagem: true,
+            lida: true,
+            dataEnvio: true
+          }
+        }
+
       },
+
       orderBy: [
         { titulo: 'asc' }
       ]
@@ -52,11 +78,37 @@ controller.retrieveOne = async function(req, res) {
 
     const result = await prisma.tarefa.findUnique({
       where: { id: req.params.id },
+
       include: {
-        usuario: true,
-        categoria: true,
-        itens: true,
-        notificacoes: true
+
+        usuario: {
+          select: {
+            nome: true,
+            email: true
+          }
+        },
+
+        categoria: {
+          select: {
+            descricao: true
+          }
+        },
+
+        itens: {
+          select: {
+            descricao: true,
+            concluido: true
+          }
+        },
+
+        notificacoes: {
+          select: {
+            mensagem: true,
+            lida: true,
+            dataEnvio: true
+          }
+        }
+
       }
     })
 
@@ -123,3 +175,4 @@ controller.delete = async function(req, res) {
 }
 
 export default controller
+
